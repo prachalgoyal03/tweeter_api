@@ -1,0 +1,6 @@
+[mysql]
+database = "first_database"
+host = "localhost"
+password = ""
+port = "3306"
+username = "root"
