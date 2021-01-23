@@ -1,5 +1,5 @@
 [mysql]
-database = "first_database"
+database = "tweeter_db"
 host = "localhost"
 password = ""
 port = "3306"
