@@ -5,6 +5,12 @@ import (
 	"net/http"
 )
 
+type apiError struct {
+	Code            int    `json:"code,omitempty"`
+	Message         string `json:"message,omitempty"`
+	InternalMessage string `json:"internal_message,omitempty"`
+}
+
 func RenderJSON(w http.ResponseWriter, any interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -18,13 +24,15 @@ func RenderJSONwithStatus(w http.ResponseWriter, status int, any interface{}) {
 }
 
 func RenderErrorJSON(w http.ResponseWriter, err *Error) {
-	w.Header().Set("Content-Type", "application/json")
-	if err.message == "" {
-		err.message = err.err
-	}
+	var e apiError
+	e.Message = err.message
+	e.InternalMessage = err.err.Error()
+	e.Code = err.code
 	if err.code == 0 {
-		err.code = http.StatusBadRequest
+		e.Code = http.StatusBadRequest
 	}
-	w.WriteHeader(err.code)
-	json.NewEncoder(w).Encode(*err)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(e.Code)
+	json.NewEncoder(w).Encode(e)
 }

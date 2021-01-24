@@ -3,18 +3,19 @@ package app
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/pkg/errors"
 )
 
 type Error struct {
 	code    int
 	message string
-	err     string
+	err     error
 }
 
 // Create a new Error struct
 func NewError(err error) *Error {
-	// return &Error{err: errors.WithStack(err)}
-	return &Error{err: err.Error()}
+	return &Error{err: errors.WithStack(err)}
 }
 
 // Set the code for the error
