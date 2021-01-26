@@ -82,3 +82,19 @@ func (appModel *AppModel) GetUsers(request *request.GetUsersRequest) (*Users, *a
 
 	return &users, nil
 }
+func (appModel *AppModel) GetUserByID(userID string) (*Users, *app.Error) {
+	var users Users
+	result := appModel.DB.First(&users, userID)
+	if result.Error != nil {
+		return nil, app.NewError(result.Error).SetCode(http.StatusNotFound)
+	}
+	return &users, nil
+}
+
+func (appModel *AppModel) DeleteUser(userID string) *app.Error {
+	result := appModel.DB.Delete(&User{}, userID)
+	if result.Error != nil && result.RowsAffected == 0 {
+		return  app.NewError(result.Error).SetCode(http.StatusNotFound)
+	}
+	return nil
+}

@@ -62,9 +62,17 @@ func (env *HttpApp) GetUsers(w http.ResponseWriter, req *http.Request) {
 
 func (env *HttpApp) GetUserByID(w http.ResponseWriter, req *http.Request) {
 	// TODO: Implement this
+	//mux docs
 	vars := mux.Vars(req)
 	userID := vars["user_id"]
-	app.RenderJSON(w, userID)
+	appModel := model.NewAppModel(req.Context(), env.DB)
+	users, err := appModel.GetUserByID(userID)
+	if err != nil {
+		app.RenderErrorJSON(w, err)
+		return
+	}
+	resp := response.MapUsersResponse(*users, response.TransformUserResponse)
+	app.RenderJSON(w, resp)
 }
 
 func (env *HttpApp) UpdateUser(w http.ResponseWriter, req *http.Request) {
@@ -74,5 +82,14 @@ func (env *HttpApp) UpdateUser(w http.ResponseWriter, req *http.Request) {
 
 func (env *HttpApp) DeleteUser(w http.ResponseWriter, req *http.Request) {
 	// TODO: Implement this
-	app.RenderJSON(w, "Not yet implemented!")
+	vars := mux.Vars(req)
+	userID := vars["user_id"]
+	appModel := model.NewAppModel(req.Context(), env.DB)
+	err := appModel.DeleteUser(userID)
+	if err != nil {
+		app.RenderErrorJSON(w, err)
+		return
+	}
+	app.RenderJSONwithStatus(w, 1175, "Deleted !")
 }
+
