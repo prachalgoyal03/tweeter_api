@@ -1,6 +1,6 @@
 module github.com/anujc4/tweeter_api
 
-go 1.15
+go 1.14
 
 require (
 	github.com/asaskevich/govalidator v0.0.0-20200907205600-7a23bdc65eef // indirect

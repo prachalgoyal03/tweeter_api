@@ -9,6 +9,7 @@ import (
 	"github.com/anujc4/tweeter_api/request"
 	"github.com/anujc4/tweeter_api/response"
 	"github.com/gorilla/schema"
+	"github.com/gorilla/mux"
 )
 
 // Set a Decoder instance as a package global, because it caches
@@ -61,7 +62,9 @@ func (env *HttpApp) GetUsers(w http.ResponseWriter, req *http.Request) {
 
 func (env *HttpApp) GetUserByID(w http.ResponseWriter, req *http.Request) {
 	// TODO: Implement this
-	app.RenderJSON(w, "Not yet implemented!")
+	vars := mux.Vars(req)
+	userID := vars["user_id"]
+	app.RenderJSON(w, userID)
 }
 
 func (env *HttpApp) UpdateUser(w http.ResponseWriter, req *http.Request) {
