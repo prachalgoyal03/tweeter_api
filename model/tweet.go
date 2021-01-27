@@ -100,6 +100,14 @@ func (appModel *AppModel) GetTweetByID(ID string) (*Tweet, *app.Error) {
 	return &tweet, nil
 }
 
+func (appModel *AppModel) DeleteTweet(ID string) *app.Error {
+	result := appModel.DB.Delete(&Tweet{}, ID)
+	if result.Error != nil && result.RowsAffected == 0 {
+		return  app.NewError(result.Error).SetCode(http.StatusNotFound)
+	}
+	return nil
+}
+
 
 
 

@@ -83,16 +83,16 @@ func (env *HttpApp) UpdateTweet(w http.ResponseWriter, req *http.Request) {
 
 func (env *HttpApp) DeleteTweet(w http.ResponseWriter, req *http.Request) {
 	// TODO: Implement this
-	// vars := mux.Vars(req)
-	// userID := vars["user_id"]
+	vars := mux.Vars(req)
+	ID := vars["tweet_id"]
 
-	// appModel := model.NewAppModel(req.Context(), env.DB)
-	// err := appModel.DeleteUser(userID)
-	// if err != nil {
-	// 	app.RenderErrorJSON(w, err)
-	// 	return
-	// }
-	// app.RenderJSONwithStatus(w, 1175, "Deleted !")
-    app.RenderJSON(w, "Not yet implemented!")
+	appModel := model.NewAppModel(req.Context(), env.DB)
+	err := appModel.DeleteTweet(ID)
+	if err != nil {
+		app.RenderErrorJSON(w, err)
+		return
+	}
+	app.RenderJSONwithStatus(w, 1175, "Deleted !")
+    // app.RenderJSON(w, "Not yet implemented!")
 }
 
