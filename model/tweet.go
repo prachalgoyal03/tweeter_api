@@ -91,10 +91,14 @@ func (appModel *AppModel) GetTweets(request *request.GetTweetsRequest) (*Tweets,
 }
 
 
-
-// func(appModel *AppModel) GetTweetByID(id int)(*Tweet, *app.Error)  {
-
-// }
+func (appModel *AppModel) GetTweetByID(ID string) (*Tweet, *app.Error) {
+	var tweet Tweet
+	result := appModel.DB.First(&tweet, ID)
+	if result.Error != nil {
+		return nil, app.NewError(result.Error).SetCode(http.StatusNotFound)
+	}
+	return &tweet, nil
+}
 
 
 

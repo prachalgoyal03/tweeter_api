@@ -9,7 +9,7 @@ import (
 	"github.com/anujc4/tweeter_api/request"
 	"github.com/anujc4/tweeter_api/response"
 	// "github.com/gorilla/schema"
-	// "github.com/gorilla/mux"
+	"github.com/gorilla/mux"
 )
 
 // Set a Decoder instance as a package global, because it caches
@@ -63,18 +63,17 @@ func (env *HttpApp) GetTweets(w http.ResponseWriter, req *http.Request) {
 
 func (env *HttpApp) GetTweetByID(w http.ResponseWriter, req *http.Request) {
 	// TODO: Implement this
-	//mux docs
-	// vars := mux.Vars(req)
-	// userID := vars["user_id"]
-	// appModel := model.NewAppModel(req.Context(), env.DB)
-	// users, err := appModel.GetUserByID(userID)
-	// if err != nil {
-	// 	app.RenderErrorJSON(w, err)
-	// 	return
-	// }
-	// resp := response.MapUsersResponse(*users, response.TransformUserResponse)
-	// app.RenderJSON(w, resp)
-    app.RenderJSON(w, "Not yet implemented!")
+	vars := mux.Vars(req)
+	ID := vars["tweet_id"]
+	appModel := model.NewAppModel(req.Context(), env.DB)
+	tweets, err := appModel.GetTweetByID(ID)
+	if err != nil {
+		app.RenderErrorJSON(w, err)
+		return
+	}
+	resp := response.TransformTweetResponse(*tweets)
+	app.RenderJSON(w, resp)
+    // app.RenderJSON(w, "Not yet implemented!")
 }
 
 func (env *HttpApp) UpdateTweet(w http.ResponseWriter, req *http.Request) {
